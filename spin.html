@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오늘의 점심 룰렛</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #007bff;
+            background: conic-gradient(
+                #ff7f50 0% 12.5%, #ffd700 12.5% 25%, 
+                #32cd32 25% 37.5%, #87cefa 37.5% 50%,
+                #ff69b4 50% 62.5%, #8a2be2 62.5% 75%, 
+                #ffa07a 75% 87.5%, #ff4500 87.5% 100%
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 2s ease-out;
+            position: relative;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: red;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .spin-btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .spin-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* 음식 이름 스타일 */
+        .wheel-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            transform: rotate(-22.5deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🍽️ 오늘의 점심은? 🍽️</h1>
+        
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <div class="wheel" id="wheel">
+                <div class="wheel-text" id="wheelText">점심 메뉴</div>
+            </div>
+        </div>
+        
+        <button class="spin-btn" onclick="spinWheel()">🎲 룰렛 돌리기!</button>
+        
+        <div class="result" id="result">🍛</div>
+    </div>
+
+    <script>
+        const restaurants = [
+            "미역국", "고등어구이", "순대국", "중국집", "설렁탕",
+            "수제비만두국", "한식뷔페", "동태탕", "니뽕내뽕", "제육정식",
+            "수퍼두퍼", "이태리부대찌개", "닭개장", "서브웨이", "낙지볶음", "김치찌개"
+        ];
+
+        function spinWheel() {
+            let wheel = document.getElementById("wheel");
+            let resultDiv = document.getElementById("result");
+            let wheelText = document.getElementById("wheelText");
+
+            let randomIndex = Math.floor(Math.random() * restaurants.length);
+            let selectedRestaurant = restaurants[randomIndex];
+
+            // **초기화 과정 추가**
+            wheel.style.transition = "none";
+            wheel.style.transform = "rotate(0deg)";
+            setTimeout(() => {
+                wheel.style.transition = "transform 2s ease-out";
+                
+                let randomRotation = 360 * 5 + (randomIndex * (360 / restaurants.length));
+                wheel.style.transform = `rotate(${randomRotation}deg)`;
+
+                setTimeout(() => {
+                    resultDiv.innerHTML = `🎉 오늘의 점심은 <b>${selectedRestaurant}</b> 입니다! 🍽️`;
+                }, 2000);
+            }, 50);
+        }
+    </script>
+
+</body>
+</html>
